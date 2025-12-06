@@ -1,0 +1,23 @@
+services:
+  overpass:
+    container_name: overpass
+    image: wiktorn/overpass-api:0.7.62
+    environment:
+      OVERPASS_META: "no"
+      OVERPASS_MODE: init
+      OVERPASS_PLANET_URL: file:///overpass_db/planet.osm.bz2
+      OVERPASS_ALLOW_DUPLICATE_QUERIES: "yes"
+      OVERPASS_PLANET_PREPROCESS: "chmod og+rx /db"
+    volumes:
+      - type: volume
+        source: overpass-db
+        target: /db
+      - type: bind
+        source: ./overpass_db
+        target: /overpass_db
+    restart: always
+    ports:
+      - "12345:80"
+
+volumes:
+  overpass-db:
